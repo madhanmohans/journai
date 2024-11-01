@@ -11,19 +11,21 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 // Mock data for existing files and status options
-const existingFiles = ["2024-10-30", "2024-10-29", "2024-10-31", "2024-11-01"]
+const journalTitle = "01-11-2024 - Journal Entry"
+const existingFiles = ["29-10-2024", "30-10-2024", "31-10-2024", "01-11-2024"]
 const statusOptions = ["Empty", "In Progress", "Completed"]
+const existingTags = ["astrology", "beauty", "journal", "reflection"]
 
-export default function JournalEntry() {
+export default function Component() {
   const [createdTime, setCreatedTime] = useState("2024-11-01T18:37")
   const [tags, setTags] = useState<string[]>(["astrology", "beauty"])
   const [status, setStatus] = useState("Empty")
-  const [entries, setEntries] = useState<string[]>(["2024-10-30", "2024-10-29", "2024-10-31"])
+  const [references, setReferences] = useState<string[]>(["30-10-2024", "31-10-2024"])
   const [markdownContent, setMarkdownContent] = useState("")
 
   return (
     <div className="min-h-screen bg-zinc-900 text-zinc-100 p-6 font-mono">
-      <h1 className="text-4xl text-red-500 mb-8">2024-11-01 - Journal</h1>
+      <h1 className="text-4xl text-red-500 mb-8 text-center">{journalTitle}</h1>
       
       <div className="space-y-6">
         <h2 className="text-2xl mb-6">Properties</h2>
@@ -41,7 +43,7 @@ export default function JournalEntry() {
 
         <div className="flex items-center gap-2">
           <Tags className="w-5 h-5 text-zinc-300" />
-          <span className="text-zinc-300">tags</span>
+          <span className="text-zinc-300">Tags</span>
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="ml-4 bg-transparent border-zinc-700 text-zinc-100">
@@ -53,16 +55,16 @@ export default function JournalEntry() {
                 <CommandInput placeholder="Search tags..." className="h-9 bg-zinc-800 text-zinc-100" />
                 <CommandEmpty>No tags found.</CommandEmpty>
                 <CommandGroup>
-                  {["astrology", "beauty", "journal", "reflection"].map((tag) => (
+                  {existingTags.map((tag) => (
                     <CommandItem
                       key={tag}
                       onSelect={() => {
-                        setTags(tags.includes(tag) ? tags.filter(t => t !== tag) : [...tags, tag])
+                        setTags(tags?.includes(tag) ? tags.filter(t => t !== tag) : [...(tags || []), tag])
                       }}
                       className="text-zinc-100 hover:bg-zinc-700"
                     >
                       {tag}
-                      {tags.includes(tag) && <Check className="ml-auto h-4 w-4" />}
+                      {tags?.includes(tag) && <Check className="ml-auto h-4 w-4" />}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -98,28 +100,28 @@ export default function JournalEntry() {
 
         <div className="flex items-center gap-2">
           <LayoutList className="w-5 h-5 text-zinc-300" />
-          <span className="text-zinc-300">entries</span>
+          <span className="text-zinc-300">References</span>
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="outline" className="ml-4 bg-transparent border-zinc-700 text-zinc-100">
-                {entries?.length > 0 ? `${entries.length} selected` : "Select entries"}
+                {references?.length > 0 ? `${references.length} selected` : "Select references"}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0 bg-zinc-800 border-zinc-700">
               <Command>
-                <CommandInput placeholder="Search entries..." className="h-9 bg-zinc-800 text-zinc-100" />
-                <CommandEmpty>No entries found.</CommandEmpty>
+                <CommandInput placeholder="Search references..." className="h-9 bg-zinc-800 text-zinc-100" />
+                <CommandEmpty>No references found.</CommandEmpty>
                 <CommandGroup>
                   {existingFiles.map((file) => (
                     <CommandItem
                       key={file}
                       onSelect={() => {
-                        setEntries(entries.includes(file) ? entries.filter(e => e !== file) : [...entries, file])
+                        setReferences(references?.includes(file) ? references.filter(e => e !== file) : [...(references || []), file])
                       }}
-                      className="text-zinc-100 hover:bg-zinc-700"
+                      className="bg-transparent text-red-500"
                     >
                       {file}
-                      {entries.includes(file) && <Check className="ml-auto h-4 w-4" />}
+                      {references?.includes(file) && <Check className="ml-auto h-4 w-4 text-zinc-100" />}
                     </CommandItem>
                   ))}
                 </CommandGroup>
@@ -127,10 +129,10 @@ export default function JournalEntry() {
             </PopoverContent>
           </Popover>
           <div className="flex gap-2 ml-2">
-            {entries?.map((entry) => (
-              <Badge key={entry} variant="outline" className="bg-transparent hover:bg-zinc-800">
-                {entry}
-                <X className="w-4 h-4 ml-1 cursor-pointer" onClick={() => setEntries(entries.filter(e => e !== entry))} />
+            {references?.map((reference) => (
+              <Badge key={reference} variant="outline" className="bg-transparent text-red-500 hover:bg-zinc-800">
+                {reference}
+                <X className="w-4 h-4 ml-1 cursor-pointer" onClick={() => setReferences(references.filter(r => r !== reference))} />
               </Badge>
             ))}
           </div>
