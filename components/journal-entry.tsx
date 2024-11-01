@@ -9,20 +9,32 @@ import { Clock, Tags, LayoutList, Menu, Plus, X, Check } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { format } from 'date-fns';
 
 // Mock data for existing files and status options
-const journalTitle = "01-11-2024 - Journal Entry"
 const existingFiles = ["29-10-2024", "30-10-2024", "31-10-2024", "01-11-2024"]
 const statusOptions = ["Empty", "In Progress", "Completed"]
 const existingTags = ["astrology", "beauty", "journal", "reflection"]
+const currentDate: Date = new Date();
+const formattedDate: string = format(currentDate, 'dd-MM-yyyy');
 
 export default function Component() {
+  const [date, setDate] = useState(formattedDate)
+  const journalTitle = date + " - Journal Entry"
   const [createdTime, setCreatedTime] = useState("2024-11-01T18:37")
   const [tags, setTags] = useState<string[]>(["astrology", "beauty"])
   const [status, setStatus] = useState("Empty")
   const [references, setReferences] = useState<string[]>(["30-10-2024", "31-10-2024"])
   const [markdownContent, setMarkdownContent] = useState("")
 
+  const reset = () => {
+      setDate(formattedDate)
+      setCreatedTime("")
+      setTags([])
+      setStatus("Empty")
+      setReferences([])
+      setMarkdownContent("")
+  }
   return (
     <div className="min-h-screen bg-zinc-900 text-zinc-100 p-6 font-mono">
       <h1 className="text-4xl text-red-500 mb-8 text-center">{journalTitle}</h1>
@@ -151,6 +163,11 @@ export default function Component() {
           onChange={(e) => setMarkdownContent(e.target.value)}
           className="w-full h-64 bg-transparent border-zinc-700 text-zinc-100 resize-none"
         />
+      </div>
+      <div className="flex flex-row-reverse">
+        <Button onClick={reset} variant="ghost" className="text-zinc-300 hover:text-zinc-100 hover:bg-green-600 mt-5">
+            Submit
+        </Button>
       </div>
     </div>
   )
