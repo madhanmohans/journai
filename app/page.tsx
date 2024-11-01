@@ -1,4 +1,4 @@
-import JournalEntry from '@/components/ui/journal-entry'
+import JournalEntry from '@/components/journal-entry'
 
 export default function Home() {
   return (
