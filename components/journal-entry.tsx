@@ -73,7 +73,7 @@ export default function Component() {
                       onSelect={() => {
                         setTags(tags?.includes(tag) ? tags.filter(t => t !== tag) : [...(tags || []), tag])
                       }}
-                      className="text-zinc-100 hover:bg-zinc-700"
+                      className="bg-transparent text-red-500"
                     >
                       {tag}
                       {tags?.includes(tag) && <Check className="ml-auto h-4 w-4" />}
